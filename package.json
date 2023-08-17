@@ -1,0 +1,19 @@
+{
+  "name": "threemc",
+  "version": "1.0.0",
+  "description": "Minecraft in three.js",
+  "main": "main.js",
+  "scripts": {
+    "ping": "echo Pong!",
+    "pong": "echo I hear Ryoma likes men.",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "three": "^0.155.0",
+    "vite": "^4.4.9"
+  }
+}
