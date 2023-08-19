@@ -16,65 +16,6 @@
 <body>
     <h1>Error!</h1>
     This text should not be visible to the player.
-    <script type="module">
-        import * as THREE from 'three';
-        import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
-        
-
-        //declarations for ease of use
-        const X_AXIS = new THREE.Vector3(1, 0, 0);
-        const Y_AXIS = new THREE.Vector3(0, 1, 0);
-        const TARGET_HEIGHT = 720
-        const TARGET_WIDTH = 1280
-        
-        const scene = new THREE.Scene();
-        const renderer = new THREE.WebGLRenderer();
-        renderer.setSize(TARGET_WIDTH, TARGET_HEIGHT);
-        renderer.setClearColor(0x280A8C, 1);
-        document.body.appendChild(renderer.domElement);
-
-        
-        const cellSize = 256;
-        const cell = new Uint8Array(cellSize ** 3);
-        
-        for (let y = 0; y < cellSize; ++y) {
-            for (let z = 0; z < cellSize; ++z) {
-                for (let x = 0; x < cellSize; ++x) {
-                    const height = (Math.sin(x/cellSize * Math.PI * 4) + Math.sin(z / cellSize * Math.PI * 6)) * 20 + cellSize /2;
-                    if (height < y + 1) {
-                        const offset = y * cellSize * cellSize + z * cellSize + x;
-                    cell[offset] = 1;
-                    console.log("log her? i barely know her!");
-                    }
-                }
-            }
-        }
-
-        const geometry = new THREE.BoxGeometry(1, 1, 1);
-        const material = new THREE.MeshPhongMaterial({color: 'green'});
-        
-        for (let y = 0; y < cellSize; ++y){
-            for (let z = 0; z < cellSize; ++z) {
-                for (let x = 0; x < cellSize; ++x) {
-                    const offset = y * cellSize * cellSize + z * cellSize + x;
-                    const block = cell[offset];
-                    const mesh = new THREE.Mesh(geometry, material);
-                    mesh.position.set(x, y, z);
-                    scene.add(mesh);
-                    console.log("log her? i barely know her! 2");
-                }
-            }
-
-        }
-        
-        function animate(){
-            requestAnimationFrame( animate );
-            renderer.render( scene, camera );
-        }
-        animate();
-
-
-     
-    </script>
+    <script type="module" src="main.js"></script>
 </body>
 </html>
