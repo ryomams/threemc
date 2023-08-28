@@ -159,6 +159,7 @@ VoxelWorld.faces = [
     }
 ];
 
+const canvas = document.querySelector( '#c' );
 
 const cellSize = 32;
 
