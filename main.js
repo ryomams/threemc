@@ -11,7 +11,9 @@ function main() {
 	const canvas = document.querySelector( '#c' );
 	const renderer = new THREE.WebGLRenderer( { antialias: true, canvas } );
 
-	const cellSize = 32;
+
+	const cellSize = 8;
+
 
 	const fov = 75;
 	const aspect = 2; // the canvas default
@@ -39,23 +41,40 @@ function main() {
 
 	addLight( - 1, 2, 4 );
 	addLight( 1, - 1, - 2 );
-    
-	const { positions, normals, indices } = world.generateGeometryDataForCell( 0, 0, 0 );
-	const geometry = new THREE.BufferGeometry();
-	const material = new THREE.MeshLambertMaterial( { color: 'green' } );
 
-	const positionNumComponents = 3;
-	const normalNumComponents = 3;
-	geometry.setAttribute(
-		'position',
-		new THREE.BufferAttribute( new Float32Array( positions ), positionNumComponents ) );
-	geometry.setAttribute(
-		'normal',
-		new THREE.BufferAttribute( new Float32Array( normals ), normalNumComponents ) );
-	geometry.setIndex( indices );
-	const mesh = new THREE.Mesh( geometry, material );
-	scene.add( mesh );
+	
+	const cell = new Uint8Array( cellSize * cellSize * cellSize );
+	for ( let x = 0; x < cellSize; ++ x ) {
+		for ( let y = 0; y < cellSize; ++ y ) {
+			for ( let z = 0; z < cellSize; ++ z ) {
+				const blockid = x * cellSize * cellSize +
+                    y * cellSize +
+                    z;
+				cell[ blockid ] = 1;
+        console.log(blockid + ", " + x + ", " + y + ", " + z);
+			}
+		}
+	}
 
+	const geometry = new THREE.BoxGeometry(1, 1, 1);
+	const material = new THREE.MeshPhongMaterial({color: 'green'});
+
+	for ( let x = 0; x < cellSize; ++ x ) {
+		for ( let y = 0; y < cellSize; ++ y ) {
+			for ( let z = 0; z < cellSize; ++ z ) {
+				const blockid = x * cellSize * cellSize +
+				y * cellSize +
+				z;
+				const block = cell[blockid];
+				const mesh = new THREE.Mesh(geometry, material);
+				mesh.position.set(x, y , z);
+				scene.add(mesh);
+			}
+		}
+	}
+
+
+//TODO: get rid of this shit
 	function resizeRendererToDisplaySize( renderer ) {
 
 		const canvas = renderer.domElement;
