@@ -51,7 +51,7 @@ function main() {
                     y * cellSize +
                     z;
 				cell[ blockid ] = 1;
-        console.log(blockid + ", " + x + ", " + y + ", " + z);
+        		console.log(blockid + ", " + x + ", " + y + ", " + z);
 			}
 		}
 	}
@@ -62,10 +62,8 @@ function main() {
 	for ( let x = 0; x < cellSize; ++ x ) {
 		for ( let y = 0; y < cellSize; ++ y ) {
 			for ( let z = 0; z < cellSize; ++ z ) {
-				const blockid = x * cellSize * cellSize +
-				y * cellSize +
-				z;
-				const block = cell[blockid];
+				//const blockid = x * cellSize * cellSize + y * cellSize +z;
+				//const block = cell[blockid];
 				const mesh = new THREE.Mesh(geometry, material);
 				mesh.position.set(x, y , z);
 				scene.add(mesh);
