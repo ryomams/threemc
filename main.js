@@ -56,7 +56,7 @@ function main() {
 		}
 	}
 
-	const geometry = new THREE.BoxGeometry(1, 1, 1);
+	const bgeometry = new THREE.BoxGeometry(1, 1, 1);
 	const material = new THREE.MeshPhongMaterial({color: 'green'});
 
 	for ( let x = 0; x < cellSize; ++ x ) {
