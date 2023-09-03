@@ -1,129 +1,33 @@
-// Three.js - Voxel Geometry - Culled Faces
-// from https://threejs.org/manual/examples/voxel-geometry-culled-faces.html
-
+// required readings
+// https://threejs.org/manual/examples/voxel-geometry-culled-faces.html
+// https://threejs.org/manual/#en/voxel-geometry
+console.log("good morning!")
 
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
+const TARGET_WIDTH = 1280;
+const TARGET_HEIGHT = 720;
 
-function main() {
+const scene = new THREE.Scene();
 
-	const canvas = document.querySelector( '#c' );
-	const renderer = new THREE.WebGLRenderer( { antialias: true, canvas } );
+const canvas = document.querySelector( '#c' );
+const renderer = new THREE.WebGLRenderer({ antialias: false, canvas });
+renderer.setSize(TARGET_WIDTH, TARGET_HEIGHT);
+renderer.setClearColor(0x280A8C, 1);
+document.body.appendChild(renderer.domElement);
 
-
-	const cellSize = 8;
-
-
-	const fov = 75;
-	const aspect = 2; // the canvas default
-	const near = 0.1;
-	const far = 1000;
-	const camera = new THREE.PerspectiveCamera( fov, aspect, near, far );
-	camera.position.set( - cellSize * .3, cellSize * .8, - cellSize * .3 );
-
-	const controls = new OrbitControls( camera, canvas );
-	controls.target.set( cellSize / 2, cellSize / 3, cellSize / 2 );
-	controls.update();
-
-	const scene = new THREE.Scene();
-	scene.background = new THREE.Color( 'lightblue' );
-
-	function addLight( x, y, z ) {
-
-		const color = 0xFFFFFF;
-		const intensity = 3;
-		const light = new THREE.DirectionalLight( color, intensity );
-		light.position.set( x, y, z );
-		scene.add( light );
-
-	}
-
-	addLight( - 1, 2, 4 );
-	addLight( 1, - 1, - 2 );
-
-	
-	const cell = new Uint8Array( cellSize * cellSize * cellSize );
-	for ( let x = 0; x < cellSize; ++ x ) {
-		for ( let y = 0; y < cellSize; ++ y ) {
-			for ( let z = 0; z < cellSize; ++ z ) {
-				const blockid = x * cellSize * cellSize +
-                    y * cellSize +
-                    z;
-				cell[ blockid ] = 1;
-        		console.log(blockid + ", " + x + ", " + y + ", " + z);
-			}
-		}
-	}
-
-	const bgeometry = new THREE.BoxGeometry(1, 1, 1);
-	const material = new THREE.MeshPhongMaterial({color: 'green'});
-
-	for ( let x = 0; x < cellSize; ++ x ) {
-		for ( let y = 0; y < cellSize; ++ y ) {
-			for ( let z = 0; z < cellSize; ++ z ) {
-				//const blockid = x * cellSize * cellSize + y * cellSize +z;
-				//const block = cell[blockid];
-				const mesh = new THREE.Mesh(geometry, material);
-				mesh.position.set(x, y , z);
-				scene.add(mesh);
-			}
-		}
-	}
+const camera = new THREE.OrthographicCamera(TARGET_WIDTH / -2, TARGET_WIDTH / 2, TARGET_HEIGHT /2, TARGET_HEIGHT / - 2, 1, 1000);
 
 
-//TODO: get rid of this shit
-	function resizeRendererToDisplaySize( renderer ) {
+const box_geometry_fornow_ = new THREE.BoxGeometry(1, 1, 1);
+const box_material_fornow_ = new THREE.MeshPhongMaterial({color: 'green'});
 
-		const canvas = renderer.domElement;
-		const width = canvas.clientWidth;
-		const height = canvas.clientHeight;
-		const needResize = canvas.width !== width || canvas.height !== height;
-		if ( needResize ) {
 
-			renderer.setSize( width, height, false );
 
-		}
-
-		return needResize;
-
-	}
-
-	let renderRequested = false;
-
-	function render() {
-
-		renderRequested = undefined;
-
-		if ( resizeRendererToDisplaySize( renderer ) ) {
-
-			const canvas = renderer.domElement;
-			camera.aspect = canvas.clientWidth / canvas.clientHeight;
-			camera.updateProjectionMatrix();
-
-		}
-
-		controls.update();
-		renderer.render( scene, camera );
-
-	}
-
-	render();
-
-	function requestRenderIfNotRequested() {
-
-		if ( ! renderRequested ) {
-
-			renderRequested = true;
-			requestAnimationFrame( render );
-
-		}
-
-	}
-
-	controls.addEventListener( 'change', requestRenderIfNotRequested );
-	window.addEventListener( 'resize', requestRenderIfNotRequested );
-
+function animate() {
+	requestAnimationFrame( animate );
+	renderer.render( scene, camera );
 }
 
-main();
+animate();
