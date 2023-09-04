@@ -14,7 +14,7 @@ const scene = new THREE.Scene();
 const canvas = document.querySelector( '#c' );
 const renderer = new THREE.WebGLRenderer({ antialias: false, canvas });
 renderer.setSize(TARGET_WIDTH, TARGET_HEIGHT);
-renderer.setClearColor(0x280A8C, 1);
+renderer.setClearColor(0xaaffee, 1);
 document.body.appendChild(renderer.domElement);
 
 const camera = new THREE.OrthographicCamera(TARGET_WIDTH / -2, TARGET_WIDTH / 2, TARGET_HEIGHT /2, TARGET_HEIGHT / - 2, 1, 1000);
