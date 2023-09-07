@@ -23,6 +23,17 @@ const camera = new THREE.OrthographicCamera(TARGET_WIDTH / -2, TARGET_WIDTH / 2,
 const box_geometry_fornow_ = new THREE.BoxGeometry(1, 1, 1);
 const box_material_fornow_ = new THREE.MeshPhongMaterial({color: 'green'});
 
+class env_cube {
+	constructor(in_size, in_pos, in_type){
+		this.Size = in_size;
+		this.Geometry = new THREE.BoxGeometry(this.Size.x, this.Size.y, this.Size.z);
+		
+		
+	}
+	render() {
+
+	}
+}
 
 
 function animate() {
