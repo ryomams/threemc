@@ -16,10 +16,17 @@ const canvas = document.querySelector( '#c' );
 const renderer = new THREE.WebGLRenderer({ antialias: false, canvas });
 renderer.setSize(TARGET_WIDTH, TARGET_HEIGHT);
 renderer.setClearColor(0xaaffee, 1);
-document.body.appendChild(renderer.domElement);
 
-const camera = new THREE.OrthographicCamera(TARGET_WIDTH / -2, TARGET_WIDTH / 2, TARGET_HEIGHT /2, TARGET_HEIGHT / - 2, 1, 1000);
+const fov = 75;
+const aspect = 2; // the canvas default
+const near = 0.1;
+const far = 1000;
+const camera = new THREE.PerspectiveCamera( fov, aspect, near, far );
+camera.position.set( - 8 * .3, 8 * .8, - 8 * .3 );
 
+const controls = new OrbitControls( camera, canvas );
+controls.target.set( 8 / 2, 8 / 3, 8 / 2 );
+controls.update();
 
 const box_geometry_fornow_ = new THREE.BoxGeometry(1, 1, 1);
 const box_material_fornow_ = new THREE.MeshPhongMaterial({color: 'green'});
