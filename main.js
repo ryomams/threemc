@@ -10,6 +10,13 @@ function getRandomInt(max) {
 	return Math.floor(Math.random() * max);
   }
 
+// data for selecting blocks
+let block_editor = {
+	blockid: 0,
+	blockattrib: 0
+};
+
+
 //basic camera and canvas render bullshit im gonna SCREAM
 const TARGET_WIDTH = 1280;
 const TARGET_HEIGHT = 720;
@@ -33,9 +40,9 @@ controls.target.set( 8 / 2, 8 / 3, 8 / 2 );
 controls.update();
 
 const box_geometry_fornow_ = new THREE.BoxGeometry(1, 1, 1);
-const box_material_fornow_1 = new THREE.MeshPhongMaterial({color: 'green'});
-const box_material_fornow_2 = new THREE.MeshPhongMaterial({color: 'red'});
-const box_material_fornow_3 = new THREE.MeshPhongMaterial({color: 'blue'});
+const green_material_fornow_ = new THREE.MeshPhongMaterial({color: 'green'});
+const red_material_fornow_ = new THREE.MeshPhongMaterial({color: 'red'});
+const blue_material_fornow_ = new THREE.MeshPhongMaterial({color: 'blue'});
 
 const cubes = new Uint8Array(512); // 8^3    // this should be 512B in size.
 function generateWorld() {
@@ -58,14 +65,29 @@ function generateWorld() {
 		}
 	}
 }
-
 generateWorld();
-function renderCube(in_x, in_y, in_z, in_material) {
+
+//modularizing threejs cuz this shit gets annoying and also im gonna be using mostly the same geometries for now
+function render_cube(in_x, in_y, in_z, in_material) {
 	const mesh = new THREE.Mesh(box_geometry_fornow_, in_material);
 	mesh.position.set(in_x, in_y , in_z);
 	scene.add(mesh);
 	console.log("gay sex!!");
 }
+/*function render_sphere() {
+	const mesh = new THREE.SphereGeometry(1, 6, 6);
+}*/
+function add_light( x, y, z ) {
+
+	const color = 0xFFDDDD;
+	const intensity = 3;
+	const light = new THREE.DirectionalLight( color, intensity );
+	light.position.set( x, y, z );
+	scene.add( light );
+
+}
+add_light( - 1, 2, 4 );
+add_light( 1, - 1, - 2 );
 
 function renderWorld() {
 	for(let x = 0; x < 8; ++ x){
@@ -74,13 +96,13 @@ function renderWorld() {
 				const blockid = x * 8 * 8 + y * 8 + z;
 				switch (cubes[blockid]) {
 					case (1):
-						renderCube(x, y, z, box_material_fornow_1);
+						render_cube(x, y, z, green_material_fornow_);
 						break;
 					case (2):
-						renderCube(x, y, z, box_material_fornow_2);
+						render_cube(x, y, z, red_material_fornow_);
 						break;
 					case (3):
-						renderCube(x, y, z, box_material_fornow_3);
+						render_cube(x, y, z, blue_material_fornow_);
 						break;
 				}
 			}
@@ -88,14 +110,26 @@ function renderWorld() {
 	}
 }
 renderWorld();
-function selectCube(id){
+
+function get_center_coordinates_of_cube(in_blockid){
 	
 }
-function setCube(id, value){
-
-}
-
-
+// https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent, 
+//keyboard events
+window.addEventListener(
+	"keydown",
+	(event) => {
+		console.log(event.code + " Pressed!");
+	},
+	true,
+  );
+window.addEventListener(
+	"keyup",
+	(event) => {
+		console.log(event.code + " Unpressed!");
+	},
+	true,
+  );  
 
 
 function animate() {
@@ -108,16 +142,3 @@ animate();
 
 
 
-
-function addLight( x, y, z ) {
-
-	const color = 0xFFFFFF;
-	const intensity = 3;
-	const light = new THREE.DirectionalLight( color, intensity );
-	light.position.set( x, y, z );
-	scene.add( light );
-
-}
-
-addLight( - 1, 2, 4 );
-addLight( 1, - 1, - 2 );
