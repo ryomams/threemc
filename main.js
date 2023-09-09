@@ -112,6 +112,7 @@ let block_selector = {
 function render_block_selector(){
 	let cubey = render_cube(); //we're just gonna go for a cube for now....   TODO: fix this shit
 	console.log(cubey);
+	
 }
 render_block_selector();
 // lot of issues with this current implementation:
