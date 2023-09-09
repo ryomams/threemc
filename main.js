@@ -10,13 +10,6 @@ function getRandomInt(max) {
 	return Math.floor(Math.random() * max);
   }
 
-// data for selecting blocks
-let block_editor = {
-	blockid: 0,
-	blockattrib: 0
-};
-
-
 //basic camera and canvas render bullshit im gonna SCREAM
 const TARGET_WIDTH = 1280;
 const TARGET_HEIGHT = 720;
@@ -43,6 +36,7 @@ const box_geometry_fornow_ = new THREE.BoxGeometry(1, 1, 1);
 const green_material_fornow_ = new THREE.MeshPhongMaterial({color: 'green'});
 const red_material_fornow_ = new THREE.MeshPhongMaterial({color: 'red'});
 const blue_material_fornow_ = new THREE.MeshPhongMaterial({color: 'blue'});
+const yellow_material_fornow_ = new THREE.MeshPhongMaterial({color: 'yellow'});
 
 const cubes = new Uint8Array(512); // 8^3    // this should be 512B in size.
 function generateWorld() {
@@ -68,11 +62,10 @@ function generateWorld() {
 generateWorld();
 
 //modularizing threejs cuz this shit gets annoying and also im gonna be using mostly the same geometries for now
-function render_cube(in_x, in_y, in_z, in_material) {
-	const mesh = new THREE.Mesh(box_geometry_fornow_, in_material);
+function render_cube(in_x = 0, in_y = 0, in_z = 0, in_material = yellow_material_fornow_, in_geometry = box_geometry_fornow_) {
+	const mesh = new THREE.Mesh(in_geometry, in_material);
 	mesh.position.set(in_x, in_y , in_z);
-	scene.add(mesh);
-	console.log("gay sex!!");
+	return scene.add(mesh).id;
 }
 /*function render_sphere() {
 	const mesh = new THREE.SphereGeometry(1, 6, 6);
@@ -111,9 +104,27 @@ function renderWorld() {
 }
 renderWorld();
 
-function get_center_coordinates_of_cube(in_blockid){
+// data for selecting blocks
+let block_selector = {
+	blockid: 0,
+	blockattrib: 0
+};
+function render_block_selector(){
+	let cubey = render_cube(); //we're just gonna go for a cube for now....   TODO: fix this shit
+	console.log(cubey);
+}
+render_block_selector();
+// lot of issues with this current implementation:
+/*		1) does not treat individual blocks with a "blockid"
+		2) 
+
+*/
+
+function select_cube(in_blockid){
+
 	
 }
+
 // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent, 
 //keyboard events
 window.addEventListener(
