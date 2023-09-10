@@ -10,7 +10,7 @@ function getRandomInt(max) {
 	return Math.floor(Math.random() * max);
   }
 
-//basic camera and canvas render bullshit im gonna SCREAM
+/////////////////////////////////////////////////////////////////////////////// Initial THREE setup
 const TARGET_WIDTH = 1280;
 const TARGET_HEIGHT = 720;
 
@@ -38,6 +38,7 @@ const red_material_fornow_ = new THREE.MeshPhongMaterial({color: 'red'});
 const blue_material_fornow_ = new THREE.MeshPhongMaterial({color: 'blue'});
 const yellow_material_fornow_ = new THREE.MeshPhongMaterial({color: 'yellow'});
 
+/////////////////////////////////////////////////////////////////////////////// World Data Generation
 const cubes = new Uint8Array(512); // 8^3    // this should be 512B in size.
 function generateWorld() {
 	for(let x = 0; x < 8; ++ x){
@@ -61,15 +62,19 @@ function generateWorld() {
 }
 generateWorld();
 
-//modularizing threejs cuz this shit gets annoying and also im gonna be using mostly the same geometries for now
-function render_cube(in_x = 0, in_y = 0, in_z = 0, in_material = yellow_material_fornow_, in_geometry = box_geometry_fornow_) {
+// data for selecting blocks
+let block_selector = {
+	blockid: 0,
+	blockattrib: 0,
+	pos: {x: 0, y: 0, z: 0}
+};
+
+/////////////////////////////////////////////////////////////////////////////// RENDERING
+function render_cube(in_x = 0, in_y = 0, in_z = 0, in_material = yellow_material_fornow_, in_geometry = box_geometry_fornow_) { //TODO: this is problematic
 	const mesh = new THREE.Mesh(in_geometry, in_material);
 	mesh.position.set(in_x, in_y , in_z);
 	return scene.add(mesh).id;
 }
-/*function render_sphere() {
-	const mesh = new THREE.SphereGeometry(1, 6, 6);
-}*/
 function add_light( x, y, z ) {
 
 	const color = 0xFFDDDD;
@@ -103,35 +108,35 @@ function renderWorld() {
 	}
 }
 renderWorld();
-
-// data for selecting blocks
-let block_selector = {
-	blockid: 0,
-	blockattrib: 0
-};
 function render_block_selector(){
-	let cubey = render_cube(); //we're just gonna go for a cube for now....   TODO: fix this shit
+	let cubey = render_cube(block_selector.pos.x, block_selector.pos.y, block_selector.pos.z); //we're just gonna go for a cube for now....   TODO: fix this shit
 	console.log(cubey);
 	
 }
 render_block_selector();
-// lot of issues with this current implementation:
-/*		1) does not treat individual blocks with a "blockid"
-		2) 
 
-*/
-
-function select_cube(in_blockid){
-
-	
-}
-
-// https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent, 
-//keyboard events
-window.addEventListener(
+/////////////////////////////////////////////////////////////////////////////// Keyboard Listeners
+// https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent
+// https://developer.mozilla.org/en-US/docs/Web/API/UI_Events/Keyboard_event_key_values
+window.addEventListener(   // this is ONE listener. only ONE event happens at a time. you must add an event listener per key ?
 	"keydown",
 	(event) => {
-		console.log(event.code + " Pressed!");
+		//console.log(event.code + event.key + " Pressed!");
+		if (event.key == "w") {
+			block_selector.pos.x += 1;
+		} else if (event.key == "s") {
+			block_selector.pos.x -= 1;
+		}
+		if (event.key == "a") {
+			block_selector.pos.z += 1;
+		} else if (event.key == "d") {
+			block_selector.pos.z -= 1;
+		}
+		if (event.key == "q"){
+			block_selector.pos.y += 1;
+		} else if (event.key == "e") {
+			block_selector.pos.y -= 1;
+		}
 	},
 	true,
   );
@@ -144,6 +149,7 @@ window.addEventListener(
   );  
 
 
+/////////////////////////////////////////////////////////////////////////////// RENDERING
 function animate() {
 	requestAnimationFrame( animate );
 	renderer.render( scene, camera );
