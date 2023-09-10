@@ -111,7 +111,6 @@ renderWorld();
 function render_block_selector(){
 	let cubey = render_cube(block_selector.pos.x, block_selector.pos.y, block_selector.pos.z); //we're just gonna go for a cube for now....   TODO: fix this shit
 	console.log(cubey);
-	
 }
 render_block_selector();
 
@@ -124,18 +123,24 @@ window.addEventListener(   // this is ONE listener. only ONE event happens at a 
 		//console.log(event.code + event.key + " Pressed!");
 		if (event.key == "w") {
 			block_selector.pos.x += 1;
+			console.log(block_selector.pos.x);
 		} else if (event.key == "s") {
 			block_selector.pos.x -= 1;
+			console.log(block_selector.pos.x);
 		}
 		if (event.key == "a") {
 			block_selector.pos.z += 1;
+			console.log(block_selector.pos.z);
 		} else if (event.key == "d") {
 			block_selector.pos.z -= 1;
+			console.log(block_selector.pos.z);
 		}
 		if (event.key == "q"){
 			block_selector.pos.y += 1;
+			console.log(block_selector.pos.y);
 		} else if (event.key == "e") {
 			block_selector.pos.y -= 1;
+			console.log(block_selector.pos.y);
 		}
 	},
 	true,
