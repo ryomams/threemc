@@ -62,11 +62,34 @@ function generateWorld() {
 }
 generateWorld();
 
-// data for selecting blocks
+// prototype for selecting blocks
 let block_selector = {
-	blockid: 0,
+	blockid: 1,
 	blockattrib: 0,
-	pos: {x: 0, y: 0, z: 0}
+	pos: {x: 0, y: 0, z: 0},
+	update_position: function(in_axis, in_magnitude){
+		switch(in_axis){
+			case ("x"):
+				this.pos.x += in_magnitude;
+				break;
+			case ("y"):
+				this.pos.y += in_magnitude;
+				break;
+			case ("y"):
+				this.pos.y += in_magnitude;
+				break;
+		}
+		block_selector.mesh.position.x = this.pos.x;
+		block_selector.mesh.position.y = this.pos.y;
+		block_selector.mesh.position.z = this.pos.z;
+		this.blockid = this.pos.x * 8 * 8 + this.pos.y * 8 + this.pos.z;
+		this.blockattrib = cubes[blockid];
+		console.log("(" + this.pos.x + ", " + this.pos.y + ", " + this.pos.z + ")")
+	},
+	update_blockdata: function() {
+		this.blockid = this.pos.x * 8 * 8 + this.pos.y * 8 + this.pos.z;
+		this.blockattrib = cubes[blockid];
+	}
 };
 
 /////////////////////////////////////////////////////////////////////////////// RENDERING
@@ -108,11 +131,10 @@ function renderWorld() {
 	}
 }
 renderWorld();
-function render_block_selector(){
-	let cubey = render_cube(block_selector.pos.x, block_selector.pos.y, block_selector.pos.z); //we're just gonna go for a cube for now....   TODO: fix this shit
-	console.log(cubey);
-}
-render_block_selector();
+
+const block_selector_geometry = new THREE.BoxGeometry(1, 1, 1);
+const block_selector_mesh = new THREE.Mesh(block_selector_geometry, yellow_material_fornow_);
+scene.add(block_selector_mesh);
 
 /////////////////////////////////////////////////////////////////////////////// Keyboard Listeners
 // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent
@@ -122,33 +144,40 @@ window.addEventListener(   // this is ONE listener. only ONE event happens at a 
 	(event) => {
 		//console.log(event.code + event.key + " Pressed!");
 		if (event.key == "w") {
-			block_selector.pos.x += 1;
-			console.log(block_selector.pos.x);
+			block_selector_mesh.position.x += 1;
 		} else if (event.key == "s") {
-			block_selector.pos.x -= 1;
-			console.log(block_selector.pos.x);
+			block_selector_mesh.position.x -= 1;
 		}
 		if (event.key == "a") {
-			block_selector.pos.z += 1;
-			console.log(block_selector.pos.z);
+			block_selector_mesh.position.z += 1;
 		} else if (event.key == "d") {
-			block_selector.pos.z -= 1;
-			console.log(block_selector.pos.z);
+			block_selector_mesh.position.z -= 1;
 		}
 		if (event.key == "q"){
-			block_selector.pos.y += 1;
-			console.log(block_selector.pos.y);
+			block_selector_mesh.position.y += 1;
 		} else if (event.key == "e") {
-			block_selector.pos.y -= 1;
-			console.log(block_selector.pos.y);
+			block_selector_mesh.position.y -= 1;
 		}
 	},
 	true,
   );
+
 window.addEventListener(
+	"keydown",
+	(event) => {
+		if (event.key == "Enter") {
+			
+		} else if (event.key == "Backspace") {
+			
+		}
+	},
+	true,
+);
+
+  window.addEventListener(
 	"keyup",
 	(event) => {
-		console.log(event.code + " Unpressed!");
+		console.log(event.key + " Unpressed!");
 	},
 	true,
   );  
